@@ -1,0 +1,8 @@
+{
+    "urls": [
+        "http://192.168.8.107:8080/stream/video.mjpeg"
+    ],
+    "object_detection_interval": 5,
+    "stream_connect_retry_interval" : 5,
+    "show_preview": true
+}
