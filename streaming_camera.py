@@ -33,15 +33,4 @@ class StreamingCamera(object):
         self.capture = None                 
         Timer(self.stream_connect_retry_interval, self.connect).start()
 
-    def show_frame(self):  
-        if self.capture == None or self.capture.isOpened() is False:         
-            return
-        if self.frame_capture_successful != True:          
-            self.reconnect() 
-            return        
-        cv2.imshow(self.name, self.frame)
-        key = cv2.waitKey(1)
-        if key == ord('q'):
-            self.capture.release()
-            cv2.destroyAllWindows()
-            sys.exit()
+    
