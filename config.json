@@ -1,8 +1,16 @@
 {
-    "urls": [
-        "http://192.168.8.107:8080/stream/video.mjpeg"
+    "cameras": [
+        {
+            "name" : "Garden Camera", 
+            "url" : "http://192.168.8.107:8080/stream/video.mjpeg"
+        },
+        {
+            "name": "Front Door Camera",
+            "url": "http://192.168.8.220:8080/stream/video.mjpeg"    
+        }
     ],
-    "object_detection_interval": 5,
+    "run_object_detection_every_n_frames": 5,
     "stream_connect_retry_interval" : 5,
+    "stream_connect_num_retries": 20,
     "show_preview": true
 }
