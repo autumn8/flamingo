@@ -16,6 +16,7 @@ class StreamingCamera(object):
         self.connect()        
 
     def connect(self):
+        print("Connecting to {} at {}".format(self.name, self.url))
         self.capture = cv2.VideoCapture(self.url)
         if self.capture == None or self.capture.isOpened() is False:                    
             print("Unable to read stream from camera at url: {}. Trying again in 5 seconds".format(self.url))      
@@ -27,8 +28,10 @@ class StreamingCamera(object):
             if self.capture == None or self.capture.isOpened() is False:     
                 continue        
             (self.frame_capture_successful, self.frame) = self.capture.read()
-            time.sleep(0.01)        
-        self.thread.join(self)
+            time.sleep(0.01)
+        print("Closing stream for {}".format(self.name))            
+        self.capture = None
+        cv2.destroyWindow(self.name)
 
     def reconnect(self):        
         print('Unable to stream from {}. Attempting to reconnect'.format(self.url))  

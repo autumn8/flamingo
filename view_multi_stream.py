@@ -8,21 +8,11 @@ process_is_alive = True
 def detect_object(net, input_queue, output_queue):
     while process_is_alive == True:
         if not input_queue.empty():
-            [camera, frame] = input_queue.get()            
+            [camera, frame] = input_queue.get()                        
             #detections = engine.detect_with_image(frame)
             detections = ''
-            output_queue.put([camera, detections])
-            time.sleep(0.01)        
-
-def goodbye():
-    global process_is_alive
-    process_is_alive = False
-    for stream in streams:
-        stream.capture.release()
-        stream.is_alive = False
-    cv2.destroyAllWindows()        
-    print('Goodbye')    
-    exit(1)
+            #output_queue.put([camera, detections])
+            time.sleep(0.005)
 
 if __name__ == '__main__':
     engine = 'GET ENGINE'    
@@ -34,7 +24,7 @@ if __name__ == '__main__':
     with open('config.json') as file:
         config = json.load(file)
 
-    streams = []
+    streams = []    
 
     for i, camera in enumerate(config['cameras']):
         url = camera['url']
@@ -45,30 +35,28 @@ if __name__ == '__main__':
     p = Process(target=detect_object, args=(engine, detection_input_queue,
                                             detection_output_queue,))
     p.daemon = True
-    p.start()
-
-    while True:
+    p.start()  
+    frame_count = 0  
+    while True:        
         for i, stream in enumerate(streams):
             if stream.capture == None or stream.capture.isOpened() is False:
                 continue
             if stream.frame_capture_successful != True:
                 stream.reconnect()
-                continue
+                continue            
             frame = stream.frame
-            detection_input_queue.put(['camera',frame])
-            if not detection_output_queue.empty():
-                [camera, detections] = detection_output_queue.get()
-            cv2.imshow(stream.name, stream.frame)                       
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            # if (frame_count%36 == 0):
+            #     detection_input_queue.put(['camera',frame])
+            #     frame_count=0
+            # frame_count+=1    
+            # if not detection_output_queue.empty():
+            #     [camera, detections] = detection_output_queue.get()
+            cv2.imshow(stream.name, stream.frame)               
+            time.sleep(0.01)                                
+            if cv2.waitKey(1) & 0xFF == ord('q'):                                                              
                 process_is_alive = False
                 for stream in streams:
-                    stream.capture.release()
-                    stream.is_alive = False
-                cv2.destroyAllWindows()
-                time.sleep(2) 
-                for stream in streams:
-                    stream.capture.release()
-                    stream.thread.join()       
-                print('Goodbye')    
-                exit(1)        
-                
+                    stream.is_alive = False 
+                time.sleep(1)
+                print('Goodbye')                       
+                exit()
