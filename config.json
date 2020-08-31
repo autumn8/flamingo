@@ -7,6 +7,14 @@
         {
             "name": "Front Door Camera",
             "url": "http://192.168.8.220:8080/stream/video.mjpeg"    
+        },
+        {
+            "name" : "Garden Camera 2", 
+            "url" : "http://192.168.8.107:8080/stream/video.mjpeg"
+        },
+        {
+            "name": "Front Door Camera 2",
+            "url": "http://192.168.8.220:8080/stream/video.mjpeg"    
         }
     ],
     "run_object_detection_every_n_frames": 5,
